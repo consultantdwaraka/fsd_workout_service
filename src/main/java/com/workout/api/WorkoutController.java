@@ -15,12 +15,12 @@ import com.workout.resources.Workout;
 
 @RestController
 public class WorkoutController {
-	private List<Workout> workoutList = new ArrayList<>();
 
 	@RequestMapping(value = "/workouts", method = RequestMethod.GET, produces = "application/json")
 	@CrossOrigin
 	public HttpEntity<List<Workout>> getWorkoutList() {
 
+	    final List<Workout> workoutList = new ArrayList<>();
 		Workout workout = new Workout();
 		workout.setWorkoutId(1);
 		workout.setTitle("Running");
