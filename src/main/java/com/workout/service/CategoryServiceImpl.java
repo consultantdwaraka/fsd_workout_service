@@ -24,4 +24,9 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.findAll();
 	}
 
+	@Override
+	public void deleteCategory(String id) {
+		categoryRepository.deleteById(id);
+	}
+
 }

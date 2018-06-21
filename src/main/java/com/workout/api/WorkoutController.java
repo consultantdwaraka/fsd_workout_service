@@ -1,51 +1,50 @@
 package com.workout.api;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.workout.resources.Workout;
+import com.workout.service.WorkoutService;
 
 @RestController
 public class WorkoutController {
+
+	@Autowired
+	private WorkoutService workoutService;
 
 	@RequestMapping(value = "/workouts", method = RequestMethod.GET, produces = "application/json")
 	@CrossOrigin
 	public HttpEntity<List<Workout>> getWorkoutList() {
 
-	    final List<Workout> workoutList = new ArrayList<>();
-		Workout workout = new Workout();
-		workout.setWorkoutId(1);
-		workout.setTitle("Running");
-		workout.setCategory("category one");
-		workout.setDescription("no description");
-		workout.setCalariesBurntPerMin(100);
-		workoutList.add(workout);
-
-		workout = new Workout();
-		workout.setWorkoutId(2);
-		workout.setTitle("Jogging");
-		workout.setCategory("category one");
-		workout.setDescription("no description");
-		workout.setCalariesBurntPerMin(200);
-		workoutList.add(workout);
-
-		workout = new Workout();
-		workout.setWorkoutId(3);
-		workout.setTitle("Tennies playing");
-		workout.setCategory("category one");
-		workout.setDescription("no description");
-		workout.setCalariesBurntPerMin(200);
-		workoutList.add(workout);
+		List<Workout> workoutList = workoutService.findWorkout();
 
 		return new ResponseEntity<>(workoutList, HttpStatus.OK);
+	}
+
+	@CrossOrigin
+	@RequestMapping(value = "/addWorkout", method = RequestMethod.POST, consumes = "application/json")
+	public void addCategory(@RequestBody Workout workout) {
+		workoutService.saveWorkout(workout);
+
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "/deleteWorkout", method = RequestMethod.DELETE, consumes = "application/json")
+	public void deleteCategory(@RequestBody String workout) {
+		Gson gson = new Gson();
+		Workout workoutRef = gson.fromJson(workout, Workout.class);
+		workoutService.deleteWorkout(workoutRef.getId());
+
 	}
 
 }

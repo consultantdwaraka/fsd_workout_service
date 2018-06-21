@@ -9,5 +9,7 @@ public interface CategoryService {
 	public void addCategory(Category category);
 
 	public List<Category> categoryList();
+	
+	public void deleteCategory(String id);
 
 }

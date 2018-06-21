@@ -1,23 +1,25 @@
 package com.workout.resources;
 
-public class Workout {
+import org.springframework.data.annotation.Id;
 
-	private Integer workoutId;
+public class Workout {
+	@Id
+	private String id;
 
 	private String title;
 
-	private String description;
+	private String note;
 
-	private Integer calariesBurntPerMin;
+	private String calories;
 
 	private String category;
-
-	public Integer getWorkoutId() {
-		return workoutId;
+	
+	public String getId() {
+		return id;
 	}
 
-	public void setWorkoutId(Integer workoutId) {
-		this.workoutId = workoutId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -28,20 +30,20 @@ public class Workout {
 		this.title = title;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getNote() {
+		return note;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
-	public Integer getCalariesBurntPerMin() {
-		return calariesBurntPerMin;
+	public String getCalories() {
+		return calories;
 	}
 
-	public void setCalariesBurntPerMin(Integer calariesBurntPerMin) {
-		this.calariesBurntPerMin = calariesBurntPerMin;
+	public void setCalories(String calories) {
+		this.calories = calories;
 	}
 
 	public String getCategory() {

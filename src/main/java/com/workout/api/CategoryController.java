@@ -1,7 +1,6 @@
 package com.workout.api;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.workout.resources.Category;
 import com.workout.service.CategoryService;
 
@@ -27,9 +28,16 @@ public class CategoryController {
 
 	@RequestMapping(value = "/listCategories", method = RequestMethod.GET)
 	@CrossOrigin
-	public List<String> addCategory() {
-		return categoryService.categoryList().stream().map(element -> element.getCategory())
-				.collect(Collectors.toList());
+	public List<Category> addCategory() {
+		return categoryService.categoryList();
+	}
+	
+	@RequestMapping(value="/deleteCategory", method= RequestMethod.DELETE, consumes = {"application/json"})
+	@CrossOrigin
+	public void deleteCategory(@RequestBody String categoryId) {
+		Gson gson = new Gson();
+		Category category = gson.fromJson(categoryId, Category.class);
+		categoryService.deleteCategory(category.getId());
 	}
 
 }
