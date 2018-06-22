@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
@@ -31,13 +32,22 @@ public class WorkoutController {
 		return new ResponseEntity<>(workoutList, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/getWorkout", method = RequestMethod.GET, produces = "application/json")
+	@CrossOrigin
+	public HttpEntity<Workout> getWorkout(@RequestParam String id) {
+
+		Workout workout = workoutService.findWorkoutById(id);
+
+		return new ResponseEntity<>(workout, HttpStatus.OK);
+	}
+
 	@CrossOrigin
 	@RequestMapping(value = "/addWorkout", method = RequestMethod.POST, consumes = "application/json")
 	public void addCategory(@RequestBody Workout workout) {
 		workoutService.saveWorkout(workout);
 
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "/deleteWorkout", method = RequestMethod.DELETE, consumes = "application/json")
 	public void deleteCategory(@RequestBody String workout) {

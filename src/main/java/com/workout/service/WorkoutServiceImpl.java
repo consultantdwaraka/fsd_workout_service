@@ -29,4 +29,9 @@ public class WorkoutServiceImpl implements WorkoutService {
 		workoutRepository.deleteById(id);
 	}
 
+	@Override
+	public Workout findWorkoutById(String id) {
+		return workoutRepository.findById(id).get();
+	}
+
 }
