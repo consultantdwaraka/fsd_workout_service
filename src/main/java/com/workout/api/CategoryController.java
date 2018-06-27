@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.workout.resources.Category;
 import com.workout.service.CategoryService;
 
@@ -20,7 +19,7 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@RequestMapping(value = "/addCategory", method = RequestMethod.POST, consumes = { "application/json" })
+	@RequestMapping(value = "/addCategory", method = RequestMethod.PUT, consumes = { "application/json" })
 	@CrossOrigin
 	public void addCategory(@RequestBody Category category) {
 		categoryService.addCategory(category);
