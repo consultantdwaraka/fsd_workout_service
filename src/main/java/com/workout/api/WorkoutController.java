@@ -43,9 +43,21 @@ public class WorkoutController {
 
 	@CrossOrigin
 	@RequestMapping(value = "/addWorkout", method = RequestMethod.POST, consumes = "application/json")
-	public void addCategory(@RequestBody Workout workout) {
+	public void addWorkout(@RequestBody Workout workout) {
 		workoutService.saveWorkout(workout);
 
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "/startWorkout", method = RequestMethod.POST, consumes = "application/json")
+	public void startWorkout(@RequestBody Workout workout) {
+		workoutService.saveWorkout(workout);
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "/endWorkout", method = RequestMethod.POST, consumes = "application/json")
+	public void endWorkout(@RequestBody Workout workout) {
+		workoutService.saveWorkout(workout);
 	}
 
 	@CrossOrigin
