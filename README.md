@@ -5,7 +5,7 @@ This service is running on docker container which should communicate with MONGO 
 1. Create docker network
 	- command: ``` docker network create fsd_workout_network ```
 2. Run mongo container
-	command: ```docker run -d --name fsdmongocontainer --network=fsd_workout_network -v ~/mongo-data:/data/db mongo```
+	- command: ```docker run -d --name fsdmongocontainer --network=fsd_workout_network -v ~/mongo-data:/data/db mongo```
 3. Build FSD_WORKOUT_SERVICE docker build
 	- command: ```./mvnw install dockerfile:build```
 4. Run FSD_WORKOUT_SERVICE docker image
