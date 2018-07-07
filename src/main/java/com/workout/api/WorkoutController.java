@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.workout.resources.TrackWorkouts;
 import com.workout.resources.Workout;
 import com.workout.service.WorkoutService;
 
@@ -47,13 +48,13 @@ public class WorkoutController {
 		workoutService.saveWorkout(workout);
 
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "/startWorkout", method = RequestMethod.POST, consumes = "application/json")
 	public void startWorkout(@RequestBody Workout workout) {
 		workoutService.saveWorkout(workout);
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "/endWorkout", method = RequestMethod.POST, consumes = "application/json")
 	public void endWorkout(@RequestBody Workout workout) {
@@ -67,6 +68,15 @@ public class WorkoutController {
 		Workout workoutRef = gson.fromJson(workout, Workout.class);
 		workoutService.deleteWorkout(workoutRef.getId());
 
+	}
+
+	@RequestMapping(value = "/trackWorkout", method = RequestMethod.GET, produces = "application/json")
+	@CrossOrigin
+	public HttpEntity<TrackWorkouts> trackWorkout() {
+
+		TrackWorkouts workout = workoutService.trackWorkouts();
+
+		return new ResponseEntity<>(workout, HttpStatus.OK);
 	}
 
 }

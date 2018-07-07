@@ -19,7 +19,7 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@RequestMapping(value = "/addCategory", method = RequestMethod.PUT, consumes = { "application/json" })
+	@RequestMapping(value = "/addCategory", method = RequestMethod.PUT, consumes = {"application/json" })
 	@CrossOrigin
 	public void addCategory(@RequestBody Category category) {
 		categoryService.addCategory(category);

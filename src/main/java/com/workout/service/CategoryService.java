@@ -6,7 +6,7 @@ import com.workout.resources.Category;
 
 public interface CategoryService {
 
-	public void addCategory(Category category);
+	public Category addCategory(Category category);
 
 	public List<Category> categoryList();
 	
