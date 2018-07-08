@@ -94,10 +94,10 @@ public class WorkoutServiceImpl implements WorkoutService {
 				int endTimeInMin = endTime.getHour() * 60 + endTime.getMinute();
 				int workoutTime = endTimeInMin - startTimeInMin;
 
-				int caloriesBurntPerMin = StringUtils.isEmpty(workout.getCalories()) ? 1
-						: Integer.parseInt(workout.getCalories());
+				float caloriesBurntPerMin = StringUtils.isEmpty(workout.getCalories()) ? 1
+						: Float.parseFloat(workout.getCalories());
 
-				int totalCaloriesBurnt = caloriesBurntPerMin * workoutTime;
+				int totalCaloriesBurnt = (int) (caloriesBurntPerMin * workoutTime);
 
 				logger.info("Time:- " + startTime + " Start date: " + startDate.getMonthValue()
 						+ "Total Calories Burnt: " + totalCaloriesBurnt);
@@ -130,10 +130,10 @@ public class WorkoutServiceImpl implements WorkoutService {
 				int endTimeInMin = endTime.getHour() * 60 + endTime.getMinute();
 				int workoutTime = endTimeInMin - startTimeInMin;
 
-				int caloriesBurntPerMin = StringUtils.isEmpty(workout.getCalories()) ? 1
-						: Integer.parseInt(workout.getCalories());
+				float caloriesBurntPerMin = StringUtils.isEmpty(workout.getCalories()) ? 1
+						: Float.parseFloat(workout.getCalories());
 
-				int totalCaloriesBurnt = caloriesBurntPerMin * workoutTime;
+				int totalCaloriesBurnt = (int)caloriesBurntPerMin * workoutTime;
 
 				logger.info("Time:- " + startTime + " Start date: " + startDate.getDayOfMonth()
 						+ "Total Calories Burnt: " + totalCaloriesBurnt);
@@ -193,16 +193,16 @@ public class WorkoutServiceImpl implements WorkoutService {
 			int endTimeInMin = endTime.getHour() * 60 + endTime.getMinute();
 			int workoutTime = endTimeInMin - startTimeInMin;
 
-			int caloriesBurntPerMin = StringUtils.isEmpty(workout.getCalories()) ? 1
-					: Integer.parseInt(workout.getCalories());
+			Float caloriesBurntPerMin = StringUtils.isEmpty(workout.getCalories()) ? 1
+					: Float.parseFloat(workout.getCalories());
 
-			int totalCaloriesBurnt = caloriesBurntPerMin * workoutTime;
+			Float totalCaloriesBurnt = caloriesBurntPerMin * workoutTime;
 
 			logger.info("Time:- " + startTime + " Start date: " + startDate.getDayOfWeek() + "Total Calories Burnt: "
 					+ totalCaloriesBurnt);
 			Long previousWorkoutValues = weekklyWorkoutsList.get(startDate.getDayOfWeek()) == null ? 0
 					: weekklyWorkoutsList.get(startDate.getDayOfWeek()).longValue();
-			Long totalCalories = previousWorkoutValues + totalCaloriesBurnt;
+			Long totalCalories = previousWorkoutValues + totalCaloriesBurnt.intValue();
 
 			weekklyWorkoutsList.put(startDate.getDayOfWeek(), totalCalories);
 		});
@@ -229,7 +229,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 			return null;
 		}
 
-		SimpleDateFormat dt = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat dt = new SimpleDateFormat("HH:mm");
 		Date date = null;
 		try {
 			date = dt.parse(time);
@@ -237,7 +237,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 			logger.error("convertStrToTime: " + e);
 		}
 
-		return LocalTime.parse(new SimpleDateFormat("hh:mm").format(date));
+		return LocalTime.parse(new SimpleDateFormat("HH:mm").format(date));
 	}
 
 	private static boolean compareDate(LocalDate startDate, LocalDate weekStartlocalDate, LocalDate endDate,
