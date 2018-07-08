@@ -6,17 +6,16 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -32,6 +31,9 @@ public class WorkoutServiceImpl implements WorkoutService {
 	private static final String WEEK3 = "Week3";
 	private static final String WEEK2 = "Week2";
 	private static final String WEEK1 = "Week1";
+
+	static Logger logger = LoggerFactory.getLogger(WorkoutServiceImpl.class);
+
 	@Autowired
 	private WorkoutRepository workoutRepository;
 
@@ -57,6 +59,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
 	@Override
 	public TrackWorkouts trackWorkouts() {
+		logger.info("Fetching workout track details...");
 		TrackWorkouts trackWorkout = new TrackWorkouts();
 
 		List<Workout> workoutList = workoutRepository.findAll();
@@ -86,7 +89,6 @@ public class WorkoutServiceImpl implements WorkoutService {
 			if (workout.getStartDate() != null && workout.getEndDate() != null) {
 				LocalDate startDate = convertStrToDate(workout.getStartDate());
 				LocalTime startTime = convertStrToTime(workout.getStartTime());
-				LocalDate endDate = convertStrToDate(workout.getEndDate());
 				LocalTime endTime = convertStrToTime(workout.getEndTime());
 				int startTimeInMin = startTime.getHour() * 60 + startTime.getMinute();
 				int endTimeInMin = endTime.getHour() * 60 + endTime.getMinute();
@@ -97,7 +99,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
 				int totalCaloriesBurnt = caloriesBurntPerMin * workoutTime;
 
-				System.out.println("Time:- " + startTime + " Start date: " + startDate.getMonthValue()
+				logger.info("Time:- " + startTime + " Start date: " + startDate.getMonthValue()
 						+ "Total Calories Burnt: " + totalCaloriesBurnt);
 
 				Long previousValue = weekklyWorkoutsList.get(startDate.getMonth());
@@ -123,7 +125,6 @@ public class WorkoutServiceImpl implements WorkoutService {
 
 				LocalDate startDate = convertStrToDate(workout.getStartDate());
 				LocalTime startTime = convertStrToTime(workout.getStartTime());
-				LocalDate endDate = convertStrToDate(workout.getEndDate());
 				LocalTime endTime = convertStrToTime(workout.getEndTime());
 				int startTimeInMin = startTime.getHour() * 60 + startTime.getMinute();
 				int endTimeInMin = endTime.getHour() * 60 + endTime.getMinute();
@@ -134,7 +135,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
 				int totalCaloriesBurnt = caloriesBurntPerMin * workoutTime;
 
-				System.out.println("Time:- " + startTime + " Start date: " + startDate.getDayOfMonth()
+				logger.info("Time:- " + startTime + " Start date: " + startDate.getDayOfMonth()
 						+ "Total Calories Burnt: " + totalCaloriesBurnt);
 				if (startDate.getDayOfMonth() <= 7) {
 					Long previousValue = weekklyWorkoutsList.get(WEEK1);
@@ -187,7 +188,6 @@ public class WorkoutServiceImpl implements WorkoutService {
 		workoutLists.forEach(workout -> {
 			LocalDate startDate = convertStrToDate(workout.getStartDate());
 			LocalTime startTime = convertStrToTime(workout.getStartTime());
-			LocalDate endDate = convertStrToDate(workout.getEndDate());
 			LocalTime endTime = convertStrToTime(workout.getEndTime());
 			int startTimeInMin = startTime.getHour() * 60 + startTime.getMinute();
 			int endTimeInMin = endTime.getHour() * 60 + endTime.getMinute();
@@ -198,8 +198,8 @@ public class WorkoutServiceImpl implements WorkoutService {
 
 			int totalCaloriesBurnt = caloriesBurntPerMin * workoutTime;
 
-			System.out.println("Time:- " + startTime + " Start date: " + startDate.getDayOfWeek()
-					+ "Total Calories Burnt: " + totalCaloriesBurnt);
+			logger.info("Time:- " + startTime + " Start date: " + startDate.getDayOfWeek() + "Total Calories Burnt: "
+					+ totalCaloriesBurnt);
 			Long previousWorkoutValues = weekklyWorkoutsList.get(startDate.getDayOfWeek()) == null ? 0
 					: weekklyWorkoutsList.get(startDate.getDayOfWeek()).longValue();
 			Long totalCalories = previousWorkoutValues + totalCaloriesBurnt;
@@ -219,25 +219,24 @@ public class WorkoutServiceImpl implements WorkoutService {
 		try {
 			date = dt.parse(dateStr);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error("convertStrToDate: " + e);
 		}
-		LocalDate localDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(date));
-		return localDate;
+		return LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(date));
 	}
 
 	private static LocalTime convertStrToTime(String time) {
 		if (time == null) {
 			return null;
 		}
-		
+
 		SimpleDateFormat dt = new SimpleDateFormat("hh:mm");
 		Date date = null;
 		try {
 			date = dt.parse(time);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error("convertStrToTime: " + e);
 		}
-		
+
 		return LocalTime.parse(new SimpleDateFormat("hh:mm").format(date));
 	}
 
@@ -247,14 +246,6 @@ public class WorkoutServiceImpl implements WorkoutService {
 		if (startDate == null || endDate == null) {
 			return false;
 		}
-		System.out.println();
-		System.out.printf("Start date: %s, weekstartedate: %s, endDate: %s, weekEndDate: %s", startDate,
-				weekStartlocalDate, endDate, weekEndDate);
-		System.out.println();
-		System.out.printf("Start date is after weekStartdate: %s", startDate.isAfter(weekStartlocalDate));
-		System.out.println();
-		System.out.printf("End date is before weekStartdate: %s", endDate.isBefore(weekEndDate));
-		System.out.println();
 
 		return (startDate.isAfter(weekStartlocalDate) || startDate.isEqual(weekStartlocalDate))
 				&& (endDate.isBefore(weekEndDate) || endDate.isEqual(weekEndDate));
